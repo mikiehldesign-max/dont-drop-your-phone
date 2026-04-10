@@ -77,7 +77,7 @@
 
     // Orthographic camera – we'll size it to match the canvas
     // and position the character via world coords
-    let camSize = 4;
+    let camSize = 3;
     const camera = new THREE.OrthographicCamera(-camSize, camSize, camSize, -camSize, 0.1, 100);
     // Isometric angle: rotate 45° around Y, then ~35.26° around X
     camera.position.set(8, 8, 8);
