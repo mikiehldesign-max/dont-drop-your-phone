@@ -112,13 +112,13 @@
         const box = new THREE.Box3().setFromObject(modelRoot);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 1.6 / maxDim;
+        const scale = 1.0 / maxDim;
         modelRoot.scale.setScalar(scale);
         // Move pivot to feet
         const center = box.getCenter(new THREE.Vector3());
         modelRoot.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
         // Rotate to face iso camera direction (character faces ~45deg from viewer)
-        modelRoot.rotation.y = Math.PI * 0.75;
+        modelRoot.rotation.y = Math.PI * 0.50;
         scene.add(modelRoot);
 
         // Play walk animation
