@@ -77,7 +77,7 @@
 
     // Orthographic camera – we'll size it to match the canvas
     // and position the character via world coords
-    let camSize = 3;
+    let camSize = 2.3;
     const camera = new THREE.OrthographicCamera(-camSize, camSize, camSize, -camSize, 0.1, 100);
     // Isometric angle: rotate 45° around Y, then ~35.26° around X
     camera.position.set(8, 8, 8);
@@ -222,8 +222,8 @@
     }
 
     function resize() {
-      const maxW = Math.min(window.innerWidth - 40, 900);
-      const maxH = Math.min(window.innerHeight - 40, 650);
+      const maxW = Math.min(window.innerWidth - 40, 1100);
+      const maxH = Math.min(window.innerHeight - 40, 800);
       canvas.width = maxW; canvas.height = maxH;
       // Also reposition the three canvas wrapper
       const tc = document.getElementById('threeCanvas');
@@ -232,10 +232,10 @@
     resize();
     window.addEventListener('resize', resize);
 
-    const TILE = 96;
+    const TILE = 125;
     function isoToScreen(tx, ty, camY) {
       return {
-        x: canvas.width/2 + (tx-ty)*(TILE/2),
+        x: canvas.width/2 + (tx-ty)*(TILE/2) - camX,
         y: canvas.height/2 + (tx+ty)*(TILE/4) - camY
       };
     }
@@ -260,7 +260,7 @@
 
     let state='menu', level=1, path=[], pathSet=new Set(), roadSet=new Set();
     let buildingData=[], _buildingTiles=new Set();
-    let walker={t:0}, camY=0, targetCamY=0;
+    let walker={t:0}, camY=0, targetCamY=0, camX=0, targetCamX=0;
     let obstacles=[], clearedCount=0, startTime=0, elapsed=0, spawnTimer=0;
     let frameId, gameSpeed=0.010, spawnInterval=3800, lastTimestamp=0;
 
@@ -329,7 +329,9 @@
     function updateCamera(){
       const wp=walkerScreenPos(walker.t,0);
       targetCamY=wp.y-canvas.height*0.58;
+      targetCamX=wp.x-canvas.width*0.50;
       camY+=(targetCamY-camY)*0.05;
+      camX+=(targetCamX-camX)*0.05;
     }
 
     // ── Game loop ──────────────────────────────────────────────
@@ -528,7 +530,7 @@
       walker.t=0;obstacles=[];clearedCount=0;
       startTime=Date.now();elapsed=0;spawnTimer=2500;
       gameSpeed=lv.speed;spawnInterval=lv.spawnRate;
-      camY=0;targetCamY=0;state='playing';lastTimestamp=0;
+      camY=0;targetCamY=0;camX=0;targetCamX=0;state='playing';lastTimestamp=0;
       document.getElementById('uiLevel').textContent=level;
       document.getElementById('overlay').classList.add('hidden');
       frameId=requestAnimationFrame(gameLoop);
